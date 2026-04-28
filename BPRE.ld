@@ -1,4 +1,6 @@
-panzerotti = 0x081E3B6a|1;
+sFieldCameraOffset = 0x03000e90;
+sHorizontalCameraPan = 0x03000e98;
+sVerticalCameraPan = 0x03000e9a;
 __aeabi_idiv = 0x081E3B68|1;
 __aeabi_idivmod = 0x081E3B68|1;
 __aeabi_uidiv = 0x081E3B68|1;
