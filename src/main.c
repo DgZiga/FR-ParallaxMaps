@@ -1,4 +1,5 @@
 
+#include "agb_debug/debug.c"
 #define REG_ID_BG3HOFS 0x1C
 #define REG_ID_BG3VOFS 0x1E
 struct fieldCameraStruct{
