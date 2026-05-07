@@ -14,11 +14,30 @@ CC = (PATH + PREFIX + 'gcc')
 LD = (PATH + PREFIX + 'ld')
 OBJCOPY = (PATH + PREFIX + 'objcopy')
 ROOT = './'
+BUILT_GRAPHICS = './src/include/built_graphics'
 BUILD = './build'
 ASFLAGS = ['-mthumb']
 LDFLAGS = ['-z','muldefs','-T', 'linker.ld', '-T', 'BPRE.ld', '-r']
 CFLAGS= ['-Isrc/include', '-mthumb', '-mno-thumb-interwork', '-mcpu=arm7tdmi',
          '-fno-inline', '-mlong-calls', '-march=armv4t', '-fno-builtin', '-Wall', '-O2']
+TILED_GRITFLAGS=['-gB4',      #4bpp
+           '-gzl',      #tileset is lz77 compressed
+           '-pzl',      #pal is lz77 compressed
+           '-pn16',     #pal is 16 colours
+           '-gu8',      #tileset is u8 array
+           '-pu8',      #pal is u8 array
+           '-mzl',      #map is lz77 compressed
+           '-mR4',      #
+           '-aw256',    #area width is 256
+           '-gTFF0000', #rgb(255,0,0) (#0xFF0000) is trasparency
+           '-ftc']      #file_type: c
+SPRITE_GRITFLAGS=['-gB4',      #4bpp
+           '-pn16',     #pal is 16 colours
+           '-gu8',      #graphics is u8 array
+           '-pu8',      #pal is u8 array
+           '-m!',       #exclude map from output
+           '-gTFF0000', #rgb(255,0,0) (#0xFF0000) is trasparency
+           '-ftc']      #file_type: c
  
 def run_command(cmd):
     try:
@@ -45,6 +64,29 @@ def process_c(in_file):
     '''Compile C'''
     out_file = make_output_file(in_file)
     cmd = [CC] + CFLAGS + ['-c', in_file, '-o', out_file]
+    run_command(cmd)
+    return out_file
+ 
+def process_img(in_file):
+    '''Compile IMGs'''
+    filename = os.path.splitext(os.path.basename(in_file))[0]
+    bgid = filename.split('_')[0]
+    # imgs are first converted to .c/.h files, then built like the rest of the source code
+    out_file = os.path.join(os.path.dirname(in_file), '..', 'built_graphics', os.path.basename(in_file))
+    
+    try:
+        os.makedirs(os.path.dirname(out_file))
+    except FileExistsError:
+        pass
+    cmd = []
+
+    if bgid == 's':
+        print('Running Sprite Grit on '+os.path.abspath(out_file))
+        cmd = ['grit', in_file, '-o', out_file] + SPRITE_GRITFLAGS
+    else:
+        print('Running Bg Grit on '+os.path.abspath(out_file)+' with target bg: '+bgid)
+        cmd = ['grit', in_file, '-o', out_file, '-mp'+bgid] + TILED_GRITFLAGS
+    
     run_command(cmd)
     return out_file
  
@@ -89,6 +131,17 @@ def main():
         pass
 
     clear_folder(BUILD)
+    clear_folder(BUILT_GRAPHICS)
+    
+    img_globs = {
+        './**/*.png',
+        './**/*.bmp'
+    }
+
+    for globstr in img_globs:
+        files = glob(os.path.join(ROOT, globstr), recursive=True)
+        for file in files:
+            process_img(file)
 
     globs = {
         '**/*.c': process_c

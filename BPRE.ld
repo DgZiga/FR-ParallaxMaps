@@ -1,3 +1,4 @@
+gpu_bg_config_set_field = 0x080019E4|1;
 sFieldCameraOffset = 0x03000e90;
 sHorizontalCameraPan = 0x03000e98;
 sVerticalCameraPan = 0x03000e9a;

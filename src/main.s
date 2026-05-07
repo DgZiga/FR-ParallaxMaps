@@ -25,6 +25,35 @@ LDR r0, =resetCoords16|1
 BX r0
 .pool
 
+.org 0x0805AA78
+.thumb
+.align 2
+MOV r1, r1
+MOV r1, r1
+MOV R1, R0
+ADD R1, #0x40
+MOV r1, r1
+ADD R0, #0x42
+MOV r1, r1
+.byte 0x16
+.byte 0x48
+.pool
+
+.org 0x0805AA16
+.thumb
+.align 2
+MOV r1, r1
+LDRH    R1, [R4,#2]
+MOV r1, r1
+MOV    R2, R0
+ADD    R2, #0x40
+LDRH    R1, [R4,#4]
+MOV r1, r1
+ADD    R0, #0x42
+LDRH    R1, [R4,#6]
+MOV r1, r1
+.pool
+
 .org freespace
 .importobj "./build/linked.o"
 
