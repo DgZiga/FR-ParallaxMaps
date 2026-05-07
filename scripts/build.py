@@ -22,14 +22,17 @@ CFLAGS= ['-Isrc/include', '-mthumb', '-mno-thumb-interwork', '-mcpu=arm7tdmi',
          '-fno-inline', '-mlong-calls', '-march=armv4t', '-fno-builtin', '-Wall', '-O2']
 TILED_GRITFLAGS=['-gB4',      #4bpp
            '-gzl',      #tileset is lz77 compressed
-           '-pzl',      #pal is lz77 compressed
+           #'-pzl',      #pal is lz77 compressed
            '-pn16',     #pal is 16 colours
            '-gu8',      #tileset is u8 array
            '-pu8',      #pal is u8 array
            '-mzl',      #map is lz77 compressed
            '-mR4',      #
            '-aw256',    #area width is 256
-           '-gTFF0000', #rgb(255,0,0) (#0xFF0000) is trasparency
+           '-gT00FF00', #rgb(255,0,0) (#0xFF0000) is trasparency,
+           #'-pT4',
+           '-ma50',
+           #'-ps-1',
            '-ftc']      #file_type: c
 SPRITE_GRITFLAGS=['-gB4',      #4bpp
            '-pn16',     #pal is 16 colours

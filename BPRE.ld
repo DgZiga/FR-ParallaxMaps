@@ -1,4 +1,8 @@
 gpu_bg_config_set_field = 0x080019E4|1;
+InitBgFromTemplate = 0x08001738|1;
+gBGTilemapBuffers1 = 0x03005014;
+gBGTilemapBuffers2 = 0x03005018;
+gBGTilemapBuffers3 = 0x0300501C;
 sFieldCameraOffset = 0x03000e90;
 sHorizontalCameraPan = 0x03000e98;
 sVerticalCameraPan = 0x03000e9a;

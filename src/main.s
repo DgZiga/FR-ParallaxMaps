@@ -17,6 +17,7 @@ BX r0
 LDR r0, =addCoords16|1
 BX r0
 .pool
+
 //reset coords16 on map update
 .org 0x0805A5A8
 .thumb
@@ -25,33 +26,19 @@ LDR r0, =resetCoords16|1
 BX r0
 .pool
 
-.org 0x0805AA78
-.thumb
-.align 2
-MOV r1, r1
-MOV r1, r1
-MOV R1, R0
-ADD R1, #0x40
-MOV r1, r1
-ADD R0, #0x42
-MOV r1, r1
-.byte 0x16
-.byte 0x48
-.pool
 
-.org 0x0805AA16
+.org 0x0805A9B4
 .thumb
 .align 2
-MOV r1, r1
-LDRH    R1, [R4,#2]
-MOV r1, r1
-MOV    R2, R0
-ADD    R2, #0x40
-LDRH    R1, [R4,#4]
-MOV r1, r1
-ADD    R0, #0x42
-LDRH    R1, [R4,#6]
-MOV r1, r1
+PUSH {R4,LR}
+LDR r3, =DrawMetatile|1
+BL goto_r3
+POP {r4}
+POP {r0}
+BX r0
+
+goto_r3:
+BX r3
 .pool
 
 .org freespace
@@ -115,11 +102,6 @@ MOV     R1, #0
 STR     R1, [R0]
 
 BX LR
-/*
-POP     {R0}
-BX      R0
-*/
-
 
 .pool
 
