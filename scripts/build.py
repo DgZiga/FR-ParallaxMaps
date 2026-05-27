@@ -30,9 +30,7 @@ TILED_GRITFLAGS=['-gB4',      #4bpp
            '-mR4',      #
            '-aw256',    #area width is 256
            '-gT00FF00', #rgb(255,0,0) (#0xFF0000) is trasparency,
-           #'-pT4',
-           '-ma50',
-           #'-ps-1',
+           '-ma50',     #tiles start at number 50
            '-ftc']      #file_type: c
 SPRITE_GRITFLAGS=['-gB4',      #4bpp
            '-pn16',     #pal is 16 colours
@@ -73,7 +71,7 @@ def process_c(in_file):
 def process_img(in_file):
     '''Compile IMGs'''
     filename = os.path.splitext(os.path.basename(in_file))[0]
-    bgid = filename.split('_')[0]
+    bgid = str(3)
     # imgs are first converted to .c/.h files, then built like the rest of the source code
     out_file = os.path.join(os.path.dirname(in_file), '..', 'built_graphics', os.path.basename(in_file))
     
@@ -83,12 +81,8 @@ def process_img(in_file):
         pass
     cmd = []
 
-    if bgid == 's':
-        print('Running Sprite Grit on '+os.path.abspath(out_file))
-        cmd = ['grit', in_file, '-o', out_file] + SPRITE_GRITFLAGS
-    else:
-        print('Running Bg Grit on '+os.path.abspath(out_file)+' with target bg: '+bgid)
-        cmd = ['grit', in_file, '-o', out_file, '-mp'+bgid] + TILED_GRITFLAGS
+    print('Running Bg Grit on '+os.path.abspath(out_file)+' with target bg: '+bgid)
+    cmd = ['grit', in_file, '-o', out_file, '-mp'+bgid] + TILED_GRITFLAGS
     
     run_command(cmd)
     return out_file
